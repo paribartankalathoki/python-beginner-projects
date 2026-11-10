@@ -1,10 +1,14 @@
 
-print("=" * 55)
-print("             PERSONAL EXPENSE TRACKER")
-print("=" * 55)
+from datetime import datetime
 
-print("       Developed by: Paribartan Kalathoki")
-print("=" * 55)
+
+print("=" * 75)
+print("                    PERSONAL EXPENSE TRACKER")
+print("=" * 75)
+
+print("                  Developed by: Paribartan Kalathoki")
+print("=" * 75)
+
 
 # Initialize variables
 income = 0
@@ -19,7 +23,9 @@ name = input("\nEnter your name: ")
 print("\nWelcome", name, "!")
 print("Let's manage your money wisely.")
 
-# Main menu
+
+# Main Menu
+
 while True:
 
     balance = income - expenses
@@ -38,6 +44,7 @@ while True:
 
     choice = input("Enter your choice (1-5): ")
 
+
     # 1. ADD INCOME
 
     if choice == "1":
@@ -47,24 +54,37 @@ while True:
         print("-" * 55)
 
         income_title = input("Enter income title: ")
-        income_amount = float(input("Enter income amount: "))
 
-        if income_amount > 0:
+        try:
+            income_amount = float(input("Enter income amount: "))
 
-            income += income_amount
+            income_date = input("Enter transaction date (YYYY-MM-DD): ")
 
-            transactions.append({
-                "type": "Income",
-                "title": income_title,
-                "amount": income_amount
-            })
+            datetime.strptime(income_date, "%Y-%m-%d")
 
-            print("\nIncome added successfully!")
-            print("Title  :", income_title)
-            print("Amount :", income_amount)
+            if income_amount > 0 and income_title.strip() != "":
 
-        else:
-            print("Invalid amount! Please enter a positive amount.")
+                income += income_amount
+
+                transactions.append({
+                    "type": "Income",
+                    "title": income_title,
+                    "amount": income_amount,
+                    "date": income_date
+                })
+
+                print("\nIncome added successfully!")
+                print("Title  :", income_title)
+                print("Amount :", income_amount)
+                print("Date   :", income_date)
+
+            else:
+                print("Invalid amount or title!")
+
+        except ValueError:
+            print("Invalid amount or date!")
+            print("Please enter a valid amount and date.")
+
 
     # 2. ADD EXPENSE
 
@@ -75,34 +95,47 @@ while True:
         print("-" * 55)
 
         expense_title = input("Enter expense title: ")
-        expense_amount = float(input("Enter expense amount: "))
 
-        balance = income - expenses
+        try:
+            expense_amount = float(input("Enter expense amount: "))
 
-        if expense_amount > 0 and expense_amount <= balance:
+            expense_date = input("Enter transaction date (YYYY-MM-DD): ")
 
-            expenses += expense_amount
+            datetime.strptime(expense_date, "%Y-%m-%d")
 
-            transactions.append({
-                "type": "Expense",
-                "title": expense_title,
-                "amount": expense_amount
-            })
+            balance = income - expenses
 
-            print("\nExpense added successfully!")
-            print("Title  :", expense_title)
-            print("Amount :", expense_amount)
+            if expense_amount > 0 and expense_amount <= balance and expense_title.strip() != "":
 
-        else:
-            print("Insufficient balance or invalid amount!")
+                expenses += expense_amount
+
+                transactions.append({
+                    "type": "Expense",
+                    "title": expense_title,
+                    "amount": expense_amount,
+                    "date": expense_date
+                })
+
+                print("\nExpense added successfully!")
+                print("Title  :", expense_title)
+                print("Amount :", expense_amount)
+                print("Date   :", expense_date)
+
+            else:
+                print("Insufficient balance or invalid details!")
+
+        except ValueError:
+            print("Invalid amount or date!")
+            print("Please enter a valid amount and date.")
+
 
     # 3. VIEW TRANSACTIONS
 
     elif choice == "3":
 
-        print("\n" + "=" * 65)
-        print("                    TRANSACTION HISTORY")
-        print("=" * 65)
+        print("\n" + "=" * 80)
+        print("                         TRANSACTION HISTORY")
+        print("=" * 80)
 
         if len(transactions) == 0:
 
@@ -110,25 +143,28 @@ while True:
 
         else:
 
-            print("{:<5} {:<12} {:<25} {:>12}".format(
-                "No.", "Type", "Title", "Amount"
+            print("{:<5} {:<12} {:<22} {:<15} {:>12}".format(
+                "No.", "Type", "Title", "Date", "Amount"
             ))
 
-            print("-" * 65)
+            print("-" * 80)
 
             for i, transaction in enumerate(transactions, start=1):
 
-                print("{:<5} {:<12} {:<25} {:>12.2f}".format(
+                print("{:<5} {:<12} {:<22} {:<15} {:>12.2f}".format(
                     i,
                     transaction["type"],
                     transaction["title"],
+                    transaction["date"],
                     transaction["amount"]
                 ))
 
-            print("-" * 65)
+            print("-" * 80)
 
             print("Total Income   :", income)
             print("Total Expenses :", expenses)
+            print("Current Balance:", income - expenses)
+
 
     # 4. VIEW BALANCE
 
@@ -141,6 +177,7 @@ while True:
         print("=" * 55)
 
         print("Customer Name      :", name)
+
         print("-" * 55)
 
         print("Total Income       :", income)
@@ -151,6 +188,7 @@ while True:
         print("Available Balance  :", balance)
 
         print("=" * 55)
+
 
     # 5. EXIT
 
@@ -163,7 +201,10 @@ while True:
         print("Goodbye", name, "!")
         print("Keep saving and managing your money wisely.")
 
+        print("=" * 55)
+
         break
+
 
     # INVALID CHOICE
 
