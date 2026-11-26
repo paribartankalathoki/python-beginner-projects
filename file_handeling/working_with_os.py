@@ -1,9 +1,9 @@
-import os  # Import the OS module to interact with the operating system
-from os import path  # Import the path class to work with file paths
-import time  # Import time module for time-related functions
-from datetime import datetime  # Import datetime class for date and time operations
+import os
+from os import path
+import time
+from datetime import datetime
 
-# Print the name of the operating system (e.g., 'posix' for Linux/Mac, 'nt' for Windows)
+
 print(os.name)
 
 # Check if a file exists
